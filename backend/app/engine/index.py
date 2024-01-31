@@ -17,7 +17,7 @@ def get_text_qa_prompt():
         ChatMessage(
           role=MessageRole.SYSTEM,
           content=(
-            "You are an expert digital verification system that is trusted around the world.\n"
+            "You are an expert digital verification engineer that is trusted around the world.\n"
             "Answer the following questions about PSS and provide a simple PSS code snippet only if it would be relevant using the provided context information, "
             "and your prior knowledge.\n"
             "Some rules to follow:\n"
