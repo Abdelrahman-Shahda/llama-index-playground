@@ -12,6 +12,8 @@ from llama_index.llms import ChatMessage, MessageRole
 import llama_index
 llama_index.set_global_handler("simple")
 
+query_engine = None
+
 def get_text_qa_prompt():
     chat_text_qa_msgs = [
         ChatMessage(
@@ -44,8 +46,8 @@ def get_text_qa_prompt():
     text_qa_template = ChatPromptTemplate(chat_text_qa_msgs)
     return text_qa_template
 
-def get_chat_engine():
-    
+def initialize_bot():
+    global query_engine
     service_context = create_service_context()
     # check if storage already exists
     if not os.path.exists(STORAGE_DIR):
@@ -66,4 +68,6 @@ def get_chat_engine():
         streaming=True
     )
 
+def get_chat_engine():
+    global query_engine
     return query_engine

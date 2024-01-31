@@ -8,10 +8,12 @@ import uvicorn
 from app.api.routers.chat import chat_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.engine.index import initialize_bot
 
 app = FastAPI()
 
 environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'development' if not set
+
 
 
 if environment == "dev":
@@ -27,6 +29,9 @@ if environment == "dev":
 
 app.include_router(chat_router, prefix="/api/chat")
 
+@app.on_event("startup")
+async def startup():
+    initialize_bot()
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app",port=8001, reload=True)
