@@ -9,7 +9,7 @@ embedchain_bot = None
 def get_response_with_rag(question):
     global embedchain_bot
     app = embedchain_bot
-    response = app.query(question)
+    response = app.chat(question)
     return response
 
 def initialize_bot():

@@ -7,12 +7,14 @@ from llama_index import (
 
 from app.engine.constants import STORAGE_DIR
 from app.engine.context import create_service_context
-from llama_index.prompts import ChatPromptTemplate
+from llama_index.prompts import ChatPromptTemplate, PromptTemplate
 from llama_index.llms import ChatMessage, MessageRole
 import llama_index
+from llama_index.prompts import 
+
 llama_index.set_global_handler("simple")
 
-query_engine = None
+index = None
 
 def get_text_qa_prompt():
     chat_text_qa_msgs = [
@@ -47,7 +49,7 @@ def get_text_qa_prompt():
     return text_qa_template
 
 def initialize_bot():
-    global query_engine
+    global index
     service_context = create_service_context()
     # check if storage already exists
     if not os.path.exists(STORAGE_DIR):
@@ -61,13 +63,13 @@ def initialize_bot():
     index = load_index_from_storage(storage_context, service_context=service_context)
     logger.info(f"Finished loading index from {STORAGE_DIR}")
 
+
+def get_response(chatHistory):
+    global index
     # Text QA Prompt
     text_qa_template = get_text_qa_prompt()
     query_engine = index.as_query_engine(
         text_qa_template=text_qa_template,
         streaming=True
     )
-
-def get_chat_engine():
-    global query_engine
-    return query_engine
+    chat_engine = index.as_chat_engine()

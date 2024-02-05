@@ -53,7 +53,7 @@ async def chat(
 
         
         # query chat engine
-        response = chat_engine.query(lastMessage.content)
+        response = chat_engine.stream_chat(lastMessage.content)
 
         # stream response
         async def event_generator():
