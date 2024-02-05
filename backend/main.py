@@ -9,6 +9,7 @@ from app.api.routers.chat import chat_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.engine.index import initialize_bot
+from app.embedchain.index import initialize_bot as embedchain_bot_intialize
 
 app = FastAPI()
 
@@ -31,7 +32,11 @@ app.include_router(chat_router, prefix="/api/chat")
 
 @app.on_event("startup")
 async def startup():
-    initialize_bot()
+    mode=os.getenv("MODE", "llama-index")
+    if mode == "llama-index":
+        initialize_bot()
+    else:
+        embedchain_bot_intialize()
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app",port=8001, reload=True)
